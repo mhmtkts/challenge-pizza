@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FormGroup, Input, Label } from "reactstrap";
+import { Form, FormGroup, Input, Label } from "reactstrap";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -66,7 +66,7 @@ const SizeFormGroup = styled(FormGroup)`
 `;
 
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 `;
 
 const Legend = styled.legend`
@@ -87,11 +87,57 @@ const DropdownContainer = styled.div`
   margin-left: 1rem;
 `;
 
+const AdditionalMaterial = styled.div`
+  width: 100%;
+  font-family: "Barlow";
+  box-sizing: border-box;
+`;
+const CheckboxContainer = styled(Form)`
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+`;
+const CheckboxGroup = styled(FormGroup)`
+  flex-basis: calc(33.33% - 1rem);
+  padding-bottom: 1rem;
+  font-weight: bold;
+`;
+const OrderNoteContainer = styled.div`
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: large;
+  font-family: "Barlow";
+  font-weight: bold;
+`;
+const OrderFormGroup = styled(FormGroup)`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  textarea {
+    margin-top: 1rem;
+    width: 100%;
+    resize: none;
+    padding: 1rem;
+    font-family: "Barlow";
+    font-size: 16px;
+  }
+`;
+
 function ProductInfo() {
   const [selectedItem, setSelectedItem] = useState("");
+  const [fullName, setFullName] = useState("");
 
   const handleSelect = (event) => {
     setSelectedItem(event.target.value);
+  };
+
+  const handleFullNameChange = (event) => {
+    setFullName(event.target.value);
   };
 
   return (
@@ -136,15 +182,104 @@ function ProductInfo() {
             onChange={handleSelect}
             style={{ width: "100%", padding: "0.5rem" }}
           >
-            <option value="" disabled hidden>
+            <option style={{ fontWeight: "bold" }} value="" disabled hidden>
               Hamur Kalınlığı
             </option>
-            <option value="İnce Hamur">İnce Hamur</option>
-            <option value="Normal Hamur">Normal Hamur</option>
-            <option value="Kalın Hamur">Kalın Hamur</option>
+            <option style={{ fontWeight: "bold" }} value="İnce Hamur">
+              İnce Hamur
+            </option>
+            <option style={{ fontWeight: "bold" }} value="Normal Hamur">
+              Normal Hamur
+            </option>
+            <option style={{ fontWeight: "bold" }} value="Kalın Hamur">
+              Kalın Hamur
+            </option>
           </select>
         </DropdownContainer>
       </FirstChoice>
+
+      <AdditionalMaterial>
+        <h3>Ek Malzemeler</h3>
+        <p>En az 4 en fazla 10 malzeme seçebilirsiniz.5₺</p>
+        <CheckboxContainer>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Pepperoni</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Sosis</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Kanada Jambonu</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Tavuk Izgara</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Soğan</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Domates</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Mısır</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Sucuk</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Jalepeno</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Sarımsak</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Biber</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Salam</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Ananas</Label>
+          </CheckboxGroup>
+          <CheckboxGroup check inline>
+            <Input type="checkbox" />
+            <Label check>Kabak</Label>
+          </CheckboxGroup>
+        </CheckboxContainer>
+      </AdditionalMaterial>
+      <div>
+        <Input
+          style={{ fontFamily: "Barlow" }}
+          placeholder="Ad Soyad"
+          minLength={3}
+          value={fullName}
+          onChange={handleFullNameChange}
+        />
+      </div>
+      <OrderNoteContainer>
+        <OrderFormGroup>
+          <Label for="exampleText">Sipariş Notu</Label>
+          <Input
+            placeholder="Siparişine eklemek istediğin bir not var mı?"
+            id="exampleText"
+            name="text"
+            type="textarea"
+          />
+        </OrderFormGroup>
+      </OrderNoteContainer>
     </Container>
   );
 }
