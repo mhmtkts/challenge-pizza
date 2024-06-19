@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, ButtonGroup, Form, FormGroup, Input, Label } from "reactstrap";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -75,6 +75,7 @@ const Legend = styled.legend`
   font-family: "Roboto Condensed";
   margin-bottom: 1rem;
 `;
+
 const FirstChoice = styled.div`
   font-family: "Barlow";
   display: flex;
@@ -82,6 +83,7 @@ const FirstChoice = styled.div`
   width: 100%;
   box-sizing: border-box;
 `;
+
 const DropdownContainer = styled.div`
   width: 35%;
   margin-left: 1rem;
@@ -92,16 +94,19 @@ const AdditionalMaterial = styled.div`
   font-family: "Barlow";
   box-sizing: border-box;
 `;
+
 const CheckboxContainer = styled(Form)`
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 1rem;
 `;
+
 const CheckboxGroup = styled(FormGroup)`
   flex-basis: calc(33.33% - 1rem);
   padding-bottom: 1rem;
   font-weight: bold;
 `;
+
 const OrderNoteContainer = styled.div`
   width: 100%;
   margin-top: 2rem;
@@ -112,6 +117,7 @@ const OrderNoteContainer = styled.div`
   font-family: "Barlow";
   font-weight: bold;
 `;
+
 const OrderFormGroup = styled(FormGroup)`
   width: 100%;
   display: flex;
@@ -120,17 +126,58 @@ const OrderFormGroup = styled(FormGroup)`
 
   textarea {
     margin-top: 1rem;
-    width: 100%;
+    width: 94%;
     resize: none;
     padding: 1rem;
     font-family: "Barlow";
     font-size: 16px;
+    border-radius: 5%;
   }
+`;
+
+const Divider = styled.hr`
+  width: 100%;
+  border: 0;
+  border-top: 2px solid gray;
+  margin: 2rem 0;
+`;
+
+const CounterContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CounterButton = styled(Button)`
+  background-color: #fdc913;
+  color: black;
+  font-size: 1.5rem;
+  width: 2rem;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  font-family: "Barlow" ;
+
+  &:hover {
+    background-color: #e0b313;
+  }
+`;
+
+const CounterInput = styled(Input)`
+  width: 3rem;
+  height: 4rem;
+  font-size: large;
+  font-family: "Barlow" ;
+  text-align: center;
+  border: 2px solid #FAF7F2;
+  
 `;
 
 function ProductInfo() {
   const [selectedItem, setSelectedItem] = useState("");
   const [fullName, setFullName] = useState("");
+  const [piece, setPiece] = useState(1);
 
   const handleSelect = (event) => {
     setSelectedItem(event.target.value);
@@ -138,6 +185,16 @@ function ProductInfo() {
 
   const handleFullNameChange = (event) => {
     setFullName(event.target.value);
+  };
+
+  const incrementPiece = () => {
+    setPiece(piece + 1);
+  };
+
+  const decrementPiece = () => {
+    if (piece > 1) {
+      setPiece(piece - 1);
+    }
   };
 
   return (
@@ -280,6 +337,13 @@ function ProductInfo() {
           />
         </OrderFormGroup>
       </OrderNoteContainer>
+      <Divider />
+
+      <CounterContainer>
+        <CounterButton onClick={decrementPiece}>-</CounterButton>
+        <CounterInput type="text" value={piece} readOnly />
+        <CounterButton onClick={incrementPiece}>+</CounterButton>
+      </CounterContainer>
     </Container>
   );
 }
