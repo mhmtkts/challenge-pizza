@@ -30,7 +30,7 @@ const SubText = styled.div`
   padding-top: 4rem;
   font-family: "Barlow";
   font-size: 16px;
-  margin-right: 22rem;
+  margin-right: 24.5rem;
 `;
 
 const Header = () => {
