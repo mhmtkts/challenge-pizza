@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup, Form, FormGroup, Input, Label } from "reactstrap";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -157,7 +158,7 @@ const CounterButton = styled(Button)`
   justify-content: center;
   align-items: center;
   border: none;
-  font-family: "Barlow" ;
+  font-family: "Barlow";
 
   &:hover {
     background-color: #e0b313;
@@ -168,16 +169,70 @@ const CounterInput = styled(Input)`
   width: 3rem;
   height: 4rem;
   font-size: large;
-  font-family: "Barlow" ;
+  font-family: "Barlow";
   text-align: center;
-  border: 2px solid #FAF7F2;
-  
+  border: 2px solid #faf7f2;
+`;
+
+const Summary = styled.div`
+  width: 20rem;
+  height: 10rem;
+  border: 1px solid gray;
+  border-radius: 5%;
+  background-color: transparent;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  font-family: "Barlow";
+`;
+
+const GeneralSummary = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const OrderButton = styled(Button)`
+  background-color: #fdc913;
+  color: black;
+  font-family: "Barlow";
+  font-size: large;
+  font-weight: bold;
+  width: 20rem;
+  margin-top: 0;
+
+  &:hover {
+    background-color: #e0b313;
+  }
+`;
+
+const Total = styled.span`
+  color: #ce2829;
+  font-weight: bold;
+`;
+
+const Choices = styled.span`
+  color: #5f5f5f;
+  font-weight: bold;
+`;
+const OrderButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6rem;
 `;
 
 function ProductInfo() {
   const [selectedItem, setSelectedItem] = useState("");
   const [fullName, setFullName] = useState("");
   const [piece, setPiece] = useState(1);
+  const [additionalPrice, setAdditionalPrice] = useState(0);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const history = useHistory();
+
+  const pizzaPrice = 85.5;
+  const ingredientPrice = 5.0;
 
   const handleSelect = (event) => {
     setSelectedItem(event.target.value);
@@ -196,6 +251,31 @@ function ProductInfo() {
       setPiece(piece - 1);
     }
   };
+
+  const handleIngredientChange = (event) => {
+    const ingredient = event.target.value;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      if (selectedIngredients.length < 10) {
+        setSelectedIngredients([...selectedIngredients, ingredient]);
+        setAdditionalPrice(additionalPrice + ingredientPrice);
+      }
+    } else {
+      setSelectedIngredients(
+        selectedIngredients.filter((item) => item !== ingredient)
+      );
+      setAdditionalPrice(additionalPrice - ingredientPrice);
+    }
+  };
+
+  const handleOrderClick = () => {
+    if (selectedIngredients.length >= 4 && selectedIngredients.length <= 10) {
+      history.push("/success");
+    }
+  };
+
+  const totalPrice = pizzaPrice * piece + additionalPrice;
 
   return (
     <Container>
@@ -257,93 +337,96 @@ function ProductInfo() {
 
       <AdditionalMaterial>
         <h3>Ek Malzemeler</h3>
-        <p>En az 4 en fazla 10 malzeme seçebilirsiniz.5₺</p>
+        <p>En az 4, en fazla 10 malzeme seçebilirsiniz.5₺ </p>
         <CheckboxContainer>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Pepperoni</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Sosis</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Kanada Jambonu</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Tavuk Izgara</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Soğan</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Domates</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Mısır</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Sucuk</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Jalepeno</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Sarımsak</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Biber</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Salam</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Ananas</Label>
-          </CheckboxGroup>
-          <CheckboxGroup check inline>
-            <Input type="checkbox" />
-            <Label check>Kabak</Label>
-          </CheckboxGroup>
+          {[
+            "Pepperoni",
+            "Sosis",
+            "Kanada Jambonu",
+            "Tavuk Izgara",
+            "Soğan",
+            "Domates",
+            "Mısır",
+            "Sucuk",
+            "Jalapeno",
+            "Sarımsak",
+            "Biber",
+            "Mantar",
+            "Ananas",
+            "Kabak",
+          ].map((ingredient, index) => (
+            <CheckboxGroup check key={index}>
+              <Input
+                type="checkbox"
+                value={ingredient}
+                onChange={handleIngredientChange}
+                disabled={
+                  !selectedIngredients.includes(ingredient) &&
+                  selectedIngredients.length >= 10
+                }
+              />
+              <Label check>{ingredient}</Label>
+            </CheckboxGroup>
+          ))}
         </CheckboxContainer>
       </AdditionalMaterial>
-      <div>
-        <Input
-          style={{ fontFamily: "Barlow" }}
-          placeholder="Ad Soyad"
-          minLength={3}
-          value={fullName}
-          onChange={handleFullNameChange}
-        />
-      </div>
+
       <OrderNoteContainer>
+        <h3>Sipariş Notu</h3>
         <OrderFormGroup>
-          <Label for="exampleText">Sipariş Notu</Label>
-          <Input
-            placeholder="Siparişine eklemek istediğin bir not var mı?"
-            id="exampleText"
+          <textarea
             name="text"
             type="textarea"
+            value={fullName}
+            onChange={handleFullNameChange}
+            placeholder="Siparişine eklemek istediğin bir not var mı?"
+            rows="6"
           />
         </OrderFormGroup>
       </OrderNoteContainer>
       <Divider />
-
-      <CounterContainer>
-        <CounterButton onClick={decrementPiece}>-</CounterButton>
-        <CounterInput type="text" value={piece} readOnly />
-        <CounterButton onClick={incrementPiece}>+</CounterButton>
-      </CounterContainer>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <CounterContainer>
+          <CounterButton onClick={decrementPiece}>-</CounterButton>
+          <CounterInput
+            type="text"
+            value={piece}
+            readOnly
+            style={{ textAlign: "center" }}
+          />
+          <CounterButton onClick={incrementPiece}>+</CounterButton>
+        </CounterContainer>
+        <Summary>
+          <GeneralSummary>
+            <h3>Sipariş Toplamı</h3>
+          </GeneralSummary>
+          <GeneralSummary>
+            <Choices>Seçimler</Choices>
+            <Choices>{additionalPrice.toFixed(2)}₺</Choices>
+          </GeneralSummary>
+          <GeneralSummary>
+            <Total>Toplam</Total>
+            <Total>{totalPrice.toFixed(2)}₺</Total>
+          </GeneralSummary>
+        </Summary>
+      </div>
+      <OrderButtonContainer>
+        <OrderButton
+          onClick={handleOrderClick}
+          disabled={
+            selectedIngredients.length < 4 || selectedIngredients.length > 10
+          }
+        >
+          SİPARİŞ VER
+        </OrderButton>
+      </OrderButtonContainer>
     </Container>
   );
 }
