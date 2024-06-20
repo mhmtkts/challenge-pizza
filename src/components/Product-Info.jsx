@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, ButtonGroup, Form, FormGroup, Input, Label } from "reactstrap";
+import { Button,  Form, FormGroup, Input, Label } from "reactstrap";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
@@ -108,6 +108,15 @@ const CheckboxGroup = styled(FormGroup)`
   font-weight: bold;
 `;
 
+const NameSurname = styled.div`
+  font-family: "Barlow";
+  font-size: large;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+`;
+
 const OrderNoteContainer = styled.div`
   width: 100%;
   margin-top: 2rem;
@@ -205,6 +214,11 @@ const OrderButton = styled(Button)`
   &:hover {
     background-color: #e0b313;
   }
+  &:disabled {
+    background-color: #e0e0e0;
+    color: #a0a0a0;
+    cursor: not-allowed;
+  }
 `;
 
 const Total = styled.span`
@@ -229,6 +243,7 @@ function ProductInfo() {
   const [piece, setPiece] = useState(1);
   const [additionalPrice, setAdditionalPrice] = useState(0);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [selectedSize, setSelectedSize] = useState("");
   const history = useHistory();
 
   const pizzaPrice = 85.5;
@@ -240,6 +255,10 @@ function ProductInfo() {
 
   const handleFullNameChange = (event) => {
     setFullName(event.target.value);
+  };
+
+  const handleSizeChange = (event) => {
+    setSelectedSize(event.target.value);
   };
 
   const incrementPiece = () => {
@@ -277,6 +296,13 @@ function ProductInfo() {
 
   const totalPrice = pizzaPrice * piece + additionalPrice;
 
+  const isOrderButtonDisabled =
+    selectedIngredients.length < 4 ||
+    selectedIngredients.length > 10 ||
+    selectedSize === "" ||
+    selectedItem === "" ||
+    fullName.length < 3;
+
   return (
     <Container>
       <PizzaName>Position Absolute Acı Pizza</PizzaName>
@@ -301,13 +327,31 @@ function ProductInfo() {
             Boyut Seç <span style={{ color: "red" }}>*</span>
           </Legend>
           <StyledFormGroup check>
-            <Input name="radio1" type="radio" /> <Label check>Küçük</Label>
+            <Input
+              name="radio1"
+              type="radio"
+              value="Küçük"
+              onChange={handleSizeChange}
+            />{" "}
+            <Label check>Küçük</Label>
           </StyledFormGroup>
           <StyledFormGroup check>
-            <Input name="radio1" type="radio" /> <Label check>Orta</Label>
+            <Input
+              name="radio1"
+              type="radio"
+              value="Orta"
+              onChange={handleSizeChange}
+            />{" "}
+            <Label check>Orta</Label>
           </StyledFormGroup>
           <StyledFormGroup check>
-            <Input name="radio1" type="radio" /> <Label check>Büyük</Label>
+            <Input
+              name="radio1"
+              type="radio"
+              value="Büyük"
+              onChange={handleSizeChange}
+            />{" "}
+            <Label check>Büyük</Label>
           </StyledFormGroup>
         </SizeFormGroup>
         <DropdownContainer>
@@ -371,14 +415,17 @@ function ProductInfo() {
         </CheckboxContainer>
       </AdditionalMaterial>
 
+      <NameSurname>
+        Ad Soyad
+        <Input value={fullName} onChange={handleFullNameChange} />
+      </NameSurname>
+
       <OrderNoteContainer>
         <h3>Sipariş Notu</h3>
         <OrderFormGroup>
           <textarea
             name="text"
             type="textarea"
-            value={fullName}
-            onChange={handleFullNameChange}
             placeholder="Siparişine eklemek istediğin bir not var mı?"
             rows="6"
           />
@@ -420,9 +467,7 @@ function ProductInfo() {
       <OrderButtonContainer>
         <OrderButton
           onClick={handleOrderClick}
-          disabled={
-            selectedIngredients.length < 4 || selectedIngredients.length > 10
-          }
+          disabled={isOrderButtonDisabled}
         >
           SİPARİŞ VER
         </OrderButton>
