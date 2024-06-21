@@ -13,6 +13,7 @@ import OrderNoteContainer from "./OrderNoteContainer";
 import CounterContainer from "./CounterContainer";
 import Summary from "./Summary";
 import OrderButtonContainer from "./OrderButtonContainer";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -33,6 +34,16 @@ const Divider = styled.hr`
   border: 0;
   border-top: 2px solid gray;
   margin: 2rem 0;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const FlexContainerWithAlign = styled(FlexContainer)`
+  align-items: center;
 `;
 
 function ProductInfo() {
@@ -87,9 +98,24 @@ function ProductInfo() {
   };
 
   const handleOrderClick = () => {
-    if (selectedIngredients.length >= 4 && selectedIngredients.length <= 10) {
-      history.push("/success");
-    }
+    const orderData = {
+      selectedItem,
+      fullName,
+      piece,
+      additionalPrice,
+      selectedIngredients,
+      selectedSize,
+    };
+
+    axios
+      .post("https://reqres.in/api/pizza", orderData)
+      .then((response) => {
+        console.log(response.data);
+        history.push("/success");
+      })
+      .catch((error) => {
+        console.log("There was an error placing the order!", error);
+      });
   };
 
   const totalPrice = pizzaPrice * piece + additionalPrice;
@@ -106,22 +132,35 @@ function ProductInfo() {
       <PizzaName />
       <PriceContainer />
       <Description />
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+      <FlexContainer>
         <SizeSelection handleSizeChange={handleSizeChange} />
-        <DoughSelection selectedItem={selectedItem} handleSelect={handleSelect} />
-      </div>
+        <DoughSelection
+          selectedItem={selectedItem}
+          handleSelect={handleSelect}
+        />
+      </FlexContainer>
       <AdditionalMaterials
         selectedIngredients={selectedIngredients}
         handleIngredientChange={handleIngredientChange}
       />
-      <NameSurname fullName={fullName} handleFullNameChange={handleFullNameChange} />
+      <NameSurname
+        fullName={fullName}
+        handleFullNameChange={handleFullNameChange}
+      />
       <OrderNoteContainer />
       <Divider />
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-        <CounterContainer piece={piece} incrementPiece={incrementPiece} decrementPiece={decrementPiece} />
+      <FlexContainerWithAlign>
+        <CounterContainer
+          piece={piece}
+          incrementPiece={incrementPiece}
+          decrementPiece={decrementPiece}
+        />
         <Summary additionalPrice={additionalPrice} totalPrice={totalPrice} />
-      </div>
-      <OrderButtonContainer handleOrderClick={handleOrderClick} isOrderButtonDisabled={isOrderButtonDisabled} />
+      </FlexContainerWithAlign>
+      <OrderButtonContainer
+        handleOrderClick={handleOrderClick}
+        isOrderButtonDisabled={isOrderButtonDisabled}
+      />
     </Container>
   );
 }

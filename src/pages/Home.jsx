@@ -65,9 +65,9 @@ const OrderButton = styled(Button)`
   font-family: "Barlow";
   font-size: large;
   font-weight: bold;
-  width: 10rem;
+  width: 11rem;
   margin-top: 0;
-  border-radius: 10%;
+  border-radius: 26px;
 
   &:hover {
     background-color: #e0b313;
@@ -93,7 +93,7 @@ function Home() {
         </HeaderWrapper>
         <Main>KOD ACIKTIRIR PİZZA, DOYURUR</Main>
         <OrderButtonWrapper>
-          <OrderButton onClick={handleClick}>ACIKTIM</OrderButton>
+          <OrderButton data-cy="route-orderpizza" onClick={handleClick}>ACIKTIM</OrderButton>
         </OrderButtonWrapper>
       </Container>
     </>

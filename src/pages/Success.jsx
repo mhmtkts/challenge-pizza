@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const PageWrapper = styled.div`
-  background-color: #ce2829; /* Arka plan rengi */
+  background-color: #ce2829;
   width: 100vw;
-  height: 100vh; /* Tüm ekranı kaplar */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

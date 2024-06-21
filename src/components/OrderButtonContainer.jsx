@@ -31,7 +31,7 @@ const OrderButton = styled(Button)`
 const OrderButtonContainer = ({ handleOrderClick, isOrderButtonDisabled }) => {
   return (
     <OrderButtonWrapper>
-      <OrderButton onClick={handleOrderClick} disabled={isOrderButtonDisabled}>
+      <OrderButton data-cy="input-orderbutton" onClick={handleOrderClick} disabled={isOrderButtonDisabled}>
         SİPARİŞ VER
       </OrderButton>
     </OrderButtonWrapper>

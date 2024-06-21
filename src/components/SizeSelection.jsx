@@ -27,11 +27,11 @@ const SizeSelection = ({ handleSizeChange }) => {
         Boyut Seç <span style={{ color: "red" }}>*</span>
       </Legend>
       <StyledFormGroup check>
-        <Input name="radio1" type="radio" value="Küçük" onChange={handleSizeChange} />{" "}
+        <Input name="radio1" type="radio" value="Küçük" onChange={handleSizeChange} data-cy= "input-size" />{" "}
         <Label check>Küçük</Label>
       </StyledFormGroup>
       <StyledFormGroup check>
-        <Input name="radio1" type="radio" value="Orta" onChange={handleSizeChange} />{" "}
+        <Input name="radio1" type="radio" value="Orta" onChange={handleSizeChange}  />{" "}
         <Label check>Orta</Label>
       </StyledFormGroup>
       <StyledFormGroup check>

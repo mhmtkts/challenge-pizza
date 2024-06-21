@@ -10,12 +10,16 @@ const NameSurnameWrapper = styled.div`
   flex-direction: column;
   margin-top: 2rem;
 `;
+const Label = styled.label`
+  display: inline;
+`;
+
 
 const NameSurname = ({ fullName, handleFullNameChange }) => {
   return (
     <NameSurnameWrapper>
-      Ad Soyad
-      <Input value={fullName} onChange={handleFullNameChange} />
+      <Label>Ad Soyad <span style={{ color: 'red' }}>*</span></Label>
+      <Input data-cy="input-name" value={fullName} onChange={handleFullNameChange} />
     </NameSurnameWrapper>
   );
 };
