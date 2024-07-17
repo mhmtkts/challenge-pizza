@@ -118,7 +118,7 @@ function ProductInfo() {
       });
   };
 
-  const totalPrice = pizzaPrice * piece + additionalPrice;
+  const totalPrice = pizzaPrice * piece + additionalPrice * piece;
 
   const isOrderButtonDisabled =
     selectedIngredients.length < 4 ||
@@ -155,7 +155,10 @@ function ProductInfo() {
           incrementPiece={incrementPiece}
           decrementPiece={decrementPiece}
         />
-        <Summary additionalPrice={additionalPrice} totalPrice={totalPrice} />
+        <Summary
+          additionalPrice={additionalPrice * piece}
+          totalPrice={totalPrice}
+        />
       </FlexContainerWithAlign>
       <OrderButtonContainer
         handleOrderClick={handleOrderClick}
